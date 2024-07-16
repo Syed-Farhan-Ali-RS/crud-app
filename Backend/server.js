@@ -1,9 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const app = express()
-const PORT = 5000
+const app = express();
+const PORT = 5000;
+const cors = require("cors");
 
 
+app.use(cors());
 // To Stringyfiy the data we have to use middleware  
 app.use(express.json());
 

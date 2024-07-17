@@ -3,6 +3,39 @@ import axios from 'axios';
 import { NavLink } from "react-router-dom";
 
 const Home = () => {
+
+    const [inputUser, setInputUser] = useState({
+        name: "",
+        email: "",
+        tel: "",
+        password: "",
+    });
+
+    const handleChange= (event) =>{
+        setInputUser(
+            {
+                ...inputUser,
+                [event.target.name]: event.target.value,
+            }
+        )
+    }
+    const handleSubmit = async (event) =>{
+        event.preventDefault();
+        // console.log(inputUser);
+        const res= await axios.post("http://localhost:5000/createuser", inputUser);
+        console.log(res);
+        fetchAllUser();
+
+        setInputUser({
+            name: '',
+            email: '',
+            tel:'',
+            password: ''
+          });
+    }
+
+
+    // Data Fetching All
     const [userData, setUserData] = useState([]);
     const fetchAllUser = async () => {
         const res = await axios.get("http://localhost:5000/readallusers");
@@ -15,6 +48,7 @@ const Home = () => {
     return (
 
         <div className="w-2/3 mx-auto mt-5">
+            <form onSubmit={handleSubmit}>
             <h1>Create User</h1>
             <div className="">
                 <label className=" text-sm text-gray-500 ">Name</label>
@@ -22,8 +56,10 @@ const Home = () => {
                     type="text"
                     name="name"
                     className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent  border-2 border-gray-300"
-                    placeholder="Enter name"
+                    placeholder="Enter name "
                     required
+                    value={inputUser.name}
+                    onChange={handleChange}
                 />
             </div>
             <div className="">
@@ -34,16 +70,20 @@ const Home = () => {
                     className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent  border-2 border-gray-300"
                     placeholder="Enter email "
                     required
+                    value={inputUser.email}
+                    onChange={handleChange}
                 />
             </div>
             <div className="">
                 <label className=" text-sm text-gray-500 ">Contact No</label>
                 <input
-                    type="number"
-                    name="Contact No"
+                    type="tel"
+                    name="tel"
                     className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent  border-2 border-gray-300"
                     placeholder="Enter Contact number "
                     required
+                    value={inputUser.tel}
+                    onChange={handleChange}
                 />
             </div>
             <div className="">
@@ -54,15 +94,17 @@ const Home = () => {
                     className="block py-2.5 px-3 w-full text-sm text-gray-900 bg-transparent  border-2 border-gray-300"
                     placeholder="Enter Password "
                     required
+                    value={inputUser.password}
+                    onChange={handleChange}
                 />
             </div>
 
             <div className="flex justify-center my-4">
-                <button type="submit" className="px-4 py-2 bg-yellow-400 rounded-sm">
+                <button type="submit" className="px-4 py-2 bg-yellow-400 rounded-sm" >
                     Add User
                 </button>
             </div>
-
+            </form>
             <div className="relative overflow-x-auto shadow-md">
                 <table className="w-full text-lg text-center text-gray-500 ">
                     <thead className="text-[17px] text-gray-700 uppercase bg-gray-500">
@@ -105,12 +147,12 @@ const Home = () => {
                                             {item?.name}
                                         </th>
                                         <td className="px-6 py-4"> {item?.email}</td>
-                                        <td className="px-6 py-4"> {item?.contact}</td>
+                                        <td className="px-6 py-4"> {item?.tel}</td>
                                         <td className="px-6 py-4"> {item?.password} </td>
                                         <td className="px-6 py-4">
                                             <div className="flex gap-x-4 justify-center">
                                                 <NavLink
-
+                                                    to={`/readuser/${item._id}`}
                                                     className="font-medium text-green-600 dark:text-blue-500 hover:underline"
                                                 >
                                                     Read

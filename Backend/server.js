@@ -30,14 +30,13 @@ const userSchenna = new mongoose.Schema(
         unique: true,
         match: [/.+\@.+\..+/, 'Please fill a valid email address']
     },
-    contact:{
+    tel:{
         type: String,
         required: true,
     },
     password:{
         type: String,
         required: true,
-        minlength: 6,
     },
 }, {timestamps: true});
 
